@@ -1,23 +1,20 @@
-hwnd = Plugin.Window.Find("GxWindowClass", "魔兽世界")
+hwnd = Plugin.Window.Find("waApplication Window","魔兽世界")
 If hwnd = 0 Then 
-    MsgBox "未找到窗口"
+    MsgBox "未找到游戏"
 End If
-Shape1 = 1053591638   //鱼钩形
-Shape2 = 965986689    //普通形
+Shape1 = 1910922691	//鱼钩形
+Shape2 = 10309065	//普通形
 
-
-//str字符串内容/run SetBindingSpell("'", "钓鱼");SetBinding("]","INTERACTTARGET");SetBinding("[","INTERACTMOUSEOVER");SetBinding("END","SETVIEW1");SaveBindings(2);
+//str字符串内容：/run SetBindingSpell("'", "钓鱼");SetBinding("]","INTERACTTARGET");SetBinding("[","INTERACTMOUSEOVER");SetBinding("END","SETVIEW1");SaveBindings(2);
 //修改按键
-str = Form1.InputBox3.Text
+str = Form1.InputBox1.Text
 Call Plugin.Bkgnd.KeyPress(hwnd, 13)//回车键
 Call Plugin.Bkgnd.SendString(Hwnd, str) 
 Call Plugin.Bkgnd.KeyPress(hwnd, 13)
-
 //Do While true
 //dm.WheelUp //滚轮向上
 Call Plugin.Bkgnd.KeyPress(hwnd, 35)
 Delay 2000
-
 Rem 标记
 sRect = Plugin.Window.GetClientRect(hwnd)   
 //MsgBox "得到窗口句柄的客户区大小为："& sRect   
@@ -26,33 +23,51 @@ dim MyArray
 MyArray = Split(sRect, "|")   
 //下面这句将字符串转换成数值   
 L = Clng(MyArray(0)): T = Clng(MyArray(1))   
-R = Clng(MyArray(2)) : B = Clng(MyArray(3))///R宽度 B高度
-
-//钓鱼区域
-xx = R/3 //钓鱼区域x坐标
-yy = B/1.6 //钓鱼区域y坐标
-xh = R/4 //钓鱼区域宽度
-yh = B / 3 //钓鱼区域高度
-
-x = xx //坐标x
-y = yy //坐标y
-i = 1
-t = 0//条
+R = Clng(MyArray(2)) : B = Clng(MyArray(3)) //R宽度 B高度
+//TracePrint B
+//TracePrint R
+//2k显示器
+If R > 2400 Then 
+    //钓鱼区域
+    xx = R/2.6 //钓鱼区域x坐标	984
+    yy = B/1.8 //钓鱼区域y坐标	800
+    xh = R/4 //钓鱼区域宽度		640
+    yh = B/4 //钓鱼区域高度		480
+    x = xx //坐标x
+    y = yy //坐标y
+    i = 1
+    t = 0//条
+Else 
+	//1k显示器
+    //钓鱼区域
+    xx = R/3 //钓鱼区域x坐标
+    yy = B/1.6 //钓鱼区域y坐标
+    xh = R/4 //钓鱼区域宽度
+    yh = B / 3 //钓鱼区域高度
+    x = xx //坐标x
+    y = yy //坐标y
+    i = 1
+    t = 0 //条
+End If
 While i = 1
-	Call Plugin.Bkgnd.KeyPress(hwnd, 222)//钓鱼
+    Call Plugin.Bkgnd.KeyPress(hwnd, 222)//钓鱼
     For y=yy To yy+yh step 50
         //Delay 60
         For x=xx To xx+xh step 25 
             Delay 60
             MoveTo x, y
             shape = GetCursorShape(0)
+            //TracePrint ("普通鼠标码："shape)
+            //If shape <> shape2 Then  
+            //	TracePrint ("鱼漂鼠标码："+shape)
+            //End If
             If shape = shape1 Then //找到鱼钩
                 For y1 = 1 To 20 step 1
                     MoveR 0, y1
                     Delay 60
                     shape = GetCursorShape(0)
                     If shape = shape2 Then //移到鱼钩下面
-                        For i=0 To 20   
+                        For i=0 To 30   
                             Delay 500
                             shape = GetCursorShape(0)
                             If shape = shape1 Then 
@@ -63,8 +78,8 @@ While i = 1
                                 Delay 1000
                                 i = 0
                                 t = t + 1
-                                Form1.Label1.Caption = t//统计
-                        		Goto 标记
+                                Form1.Label1.Caption = "数量："+CStr(t)//统计
+                                Goto 标记
                             End If
                         Next 
                         Goto 标记
