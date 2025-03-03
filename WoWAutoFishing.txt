@@ -2,8 +2,11 @@ hwnd = Plugin.Window.Find("waApplication Window","魔兽世界")
 If hwnd = 0 Then 
     MsgBox "未找到游戏"
 End If
-Shape1 = 1910922691	//鱼钩形
-Shape2 = 10309065	//普通形
+Shape1 = 1053591638 //鱼钩形
+Shape2 = 1916774809 //普通形
+
+// Shape1 = 1910922691	//旧鱼钩形
+// Shape2 = 10309065	//旧普通形
 
 //str字符串内容：/run SetBindingSpell("'", "钓鱼");SetBinding("]","INTERACTTARGET");SetBinding("[","INTERACTMOUSEOVER");SetBinding("END","SETVIEW1");SaveBindings(2);
 //修改按键
